@@ -1,0 +1,262 @@
+/**
+ * Dockie theme for CopilotKit sidebar (v2).
+ * Aligns with dockie.ai: blue header, white/light grey content, clean typography.
+ */
+
+[data-copilotkit] {
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --secondary: #f8fafc;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #eff6ff;
+  --accent-foreground: #1e40af;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #2563eb;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eff6ff;
+  --sidebar-accent-foreground: #1e40af;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #2563eb;
+  --sidebar-width: 340px;
+
+  font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Sidebar panel: thinner width, full viewport height */
+[data-copilot-sidebar] {
+  width: var(--sidebar-width, 340px) !important;
+  min-height: 100vh !important;
+  height: 100dvh !important;
+}
+
+/* ----- Header ----- */
+.cpk-sidebar-header {
+  background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 0.875rem 1rem !important;
+  min-height: 3.25rem !important;
+  box-shadow: 0 2px 8px rgba(29, 78, 216, 0.25) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 0.75rem !important;
+}
+
+.cpk-sidebar-header [data-slot="header"] {
+  flex: 1 !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  min-width: 0 !important;
+}
+
+.cpk-sidebar-header-title {
+  color: #ffffff !important;
+  font-family: inherit !important;
+  font-weight: 600 !important;
+  font-size: 1.0625rem !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1.3 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+}
+
+.cpk-sidebar-header-with-logo {
+  display: inline-flex !important;
+  align-items: center !important;
+  /* gap: 0.275rem !important; */
+  margin-right: auto !important;
+}
+
+.cpk-sidebar-header-logo {
+  width: 4rem !important;
+  height: auto !important;
+  min-height: 1.25rem !important;
+  flex-shrink: 0 !important;
+  object-fit: contain !important;
+  filter: brightness(0) invert(1) !important;
+}
+
+.cpk-sidebar-header-close {
+  color: #ffffff !important;
+  border-radius: 9999px !important;
+  padding: 0.375rem !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+  flex-shrink: 0 !important;
+}
+
+.cpk-sidebar-header-close:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+/* ----- Message area ----- */
+.cpk-sidebar-messages {
+  background-color: #ffffff !important;
+  font-family: inherit !important;
+  font-size: 0.9375rem !important;
+  line-height: 1.55 !important;
+  color: #0f172a !important;
+}
+
+.cpk-sidebar-scroll {
+  background-color: #ffffff !important;
+  bottom: 1.5rem !important;
+}
+
+/* ----- Welcome ----- */
+.cpk-sidebar-welcome {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+  padding: 1.25rem 1.25rem !important;
+  font-family: inherit !important;
+  font-size: 0.9125rem !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+  line-height: 1.5 !important;
+  color: #475569 !important;
+}
+
+.cpk-sidebar-welcome * {
+  font-size: inherit !important;
+}
+
+/* ----- Input area ----- */
+.cpk-sidebar-input {
+  background-color: #ffffff !important;
+  border-top: none !important;
+  padding: 1rem 1.25rem !important;
+  gap: 0.75rem !important;
+  min-height: auto !important;
+}
+
+.cpk-sidebar-input-field {
+  background-color: #ffffff !important;
+  border: none !important;
+  border-radius: 0.75rem !important;
+  padding: 0.875rem 1.125rem !important;
+  min-height: 3rem !important;
+  font-family: inherit !important;
+  font-size: 0.9375rem !important;
+  line-height: 1.5 !important;
+  color: #0f172a !important;
+  transition: box-shadow 0.15s ease;
+  resize: none !important;
+}
+
+[data-copilotkit] textarea.cpk-sidebar-input-field,
+[data-copilotkit] .cpk-sidebar-input textarea {
+  min-height: 3rem !important;
+  padding: 0.875rem 1.125rem !important;
+  line-height: 1.5 !important;
+}
+
+.cpk-sidebar-input-field::placeholder {
+  color: #94a3b8 !important;
+}
+
+.cpk-sidebar-input-field:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.cpk-sidebar-send-btn {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  padding: 0.5rem 0.75rem !important;
+  font-weight: 500 !important;
+  transition: background-color 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+}
+
+.cpk-sidebar-input:has(.cpk-sidebar-input-field:placeholder-shown) .cpk-sidebar-send-btn,
+.cpk-sidebar-input:has(textarea:placeholder-shown) .cpk-sidebar-send-btn {
+  background-color: #cbd5e1 !important;
+  color: #64748b !important;
+  opacity: 0.85 !important;
+  cursor: default !important;
+}
+
+.cpk-sidebar-input:has(.cpk-sidebar-input-field:placeholder-shown) .cpk-sidebar-send-btn:hover,
+.cpk-sidebar-input:has(textarea:placeholder-shown) .cpk-sidebar-send-btn:hover {
+  background-color: #cbd5e1 !important;
+  color: #64748b !important;
+}
+
+.cpk-sidebar-send-btn:hover {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+
+.cpk-sidebar-send-btn:active {
+  transform: scale(0.98);
+}
+
+.cpk-sidebar-disclaimer {
+  font-family: inherit !important;
+  color: #64748b !important;
+  font-size: 0.75rem !important;
+  line-height: 1.4 !important;
+  margin-top: 0.5rem !important;
+}
+
+/* ----- Suggestion pills ----- */
+.cpk-sidebar-suggestions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important;
+  padding: 0 1rem 0.75rem !important;
+}
+
+.cpk-sidebar-suggestion-pill {
+  font-family: inherit !important;
+  background-color: #eff6ff !important;
+  color: #1e40af !important;
+  border: 1px solid rgba(37, 99, 235, 0.25) !important;
+  border-radius: 9999px !important;
+  padding: 0.375rem 0.75rem !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cpk-sidebar-suggestion-pill:hover {
+  background-color: #dbeafe !important;
+  border-color: rgba(37, 99, 235, 0.4) !important;
+  color: #1e40af !important;
+}
+
+/* ----- Toggle button ----- */
+.cpk-sidebar-toggle {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+  padding: 0.75rem !important;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.cpk-sidebar-toggle:hover {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45) !important;
+}
+
+.cpk-sidebar-toggle:active {
+  transform: scale(0.96);
+}
