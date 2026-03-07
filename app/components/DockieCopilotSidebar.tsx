@@ -1,9 +1,29 @@
 "use client";
 
-import { CopilotSidebar } from "@copilotkit/react-core/v2";
+import { CopilotSidebar, useConfigureSuggestions } from "@copilotkit/react-core/v2";
 import "@copilotkit/react-core/v2/styles.css";
 
 export default function DockieCopilotSidebar() {
+  useConfigureSuggestions({
+    suggestions: [
+      {
+        title: "Get a quote",
+        message:
+          "Give me a shipping quote from Lagos to Rotterdam for a 10-tonne container.",
+      },
+      {
+        title: "Compare routes",
+        message:
+          "Compare air freight vs ocean freight for electronics from Shenzhen to Chicago.",
+      },
+      {
+        title: "Explain costs",
+        message: "Break down what's driving the cost on my last quote.",
+      },
+    ],
+    available: "always",
+  });
+
   return (
     <CopilotSidebar
       labels={{
@@ -12,6 +32,7 @@ export default function DockieCopilotSidebar() {
         // chatInputPlaceholder: "Ask or search for anything…",
         chatDisclaimerText: "AI can make mistakes. Please verify important information.",
       }}
+      className="cpk-sidebar-container"
       header={{
         className: "cpk-sidebar-header",
         titleContent: () => (

@@ -36,11 +36,27 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Sidebar panel: thinner width, full viewport height */
+/* Sidebar panel: thinner width, full viewport height, flex column so scroll + input share space */
 [data-copilot-sidebar] {
   width: var(--sidebar-width, 340px) !important;
   min-height: 100vh !important;
   height: 100dvh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+}
+
+/* Main content wrapper (between header and footer): flex so scroll area can shrink when input grows */
+[data-copilot-sidebar] > div {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.cpk-sidebar-container {
+  background-color: #ffffff !important;
 }
 
 /* ----- Header ----- */
@@ -112,9 +128,19 @@
   color: #0f172a !important;
 }
 
+/* Scroll area: takes remaining space above input; shrinks upward when input grows so content stays visible */
 .cpk-sidebar-scroll {
   background-color: #ffffff !important;
-  bottom: 1.5rem !important;
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  position: relative !important;
+  z-index: 1 !important;
+  padding-top: 9rem !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: -5.5rem !important;
+  padding-bottom: 5.5rem !important;
 }
 
 /* ----- Welcome ----- */
@@ -137,10 +163,19 @@
 /* ----- Input area ----- */
 .cpk-sidebar-input {
   background-color: #ffffff !important;
-  border-top: none !important;
+  border-top: 1px solid #e2e8f0 !important;
   padding: 1rem 1.25rem !important;
   gap: 0.75rem !important;
   min-height: auto !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  z-index: 1 !important;
+  margin-top: 0.25rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
 }
 
 .cpk-sidebar-input-field {
@@ -155,13 +190,33 @@
   color: #0f172a !important;
   transition: box-shadow 0.15s ease;
   resize: none !important;
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
 }
 
 [data-copilotkit] textarea.cpk-sidebar-input-field,
 [data-copilotkit] .cpk-sidebar-input textarea {
   min-height: 3rem !important;
+  min-width: 0 !important;
+  width: 100% !important;
   padding: 0.875rem 1.125rem !important;
   line-height: 1.5 !important;
+  box-sizing: border-box !important;
+}
+
+/* Input row (textarea + buttons) stays horizontal and above the disclaimer */
+[data-copilotkit] .cpk-sidebar-input > div,
+[data-copilotkit] .cpk-sidebar-input > form {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-end !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  gap: 0.5rem !important;
+  order: 0 !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 .cpk-sidebar-input-field::placeholder {
@@ -211,7 +266,12 @@
   color: #64748b !important;
   font-size: 0.75rem !important;
   line-height: 1.4 !important;
+  text-align: center !important;
+  align-items: center !important;
+  justify-content: center !important;
   margin-top: 0.5rem !important;
+  margin-bottom: 5rem !important;
+  width: 100% !important;
 }
 
 /* ----- Suggestion pills ----- */
@@ -259,4 +319,467 @@
 
 .cpk-sidebar-toggle:active {
   transform: scale(0.96);
+}
+
+/* =====================================================
+   Dockie — Generative Analysis Card
+   Rendered inside the CopilotKit sidebar via
+   useFrontendTool / display_quote_analysis
+   ===================================================== */
+
+@keyframes dck-pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dck-fade-slide {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.dck-analysis-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #2563eb;
+  border-radius: 0.75rem;
+  padding: 1.125rem 1.25rem;
+  margin: 0.5rem 0;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.07), 0 1px 4px rgba(15, 23, 42, 0.04);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  animation: dck-pop-in 0.5s ease-out forwards;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  position: relative !important;
+  /* z-index: 1000 !important; */
+}
+
+.dck-analysis-card:hover {
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12), 0 2px 6px rgba(15, 23, 42, 0.06);
+  transform: translateY(-1px);
+}
+
+/* Header row */
+.dck-analysis-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+}
+
+.dck-scenario-chip {
+  background: #eff6ff;
+  color: #1e40af;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.dck-confidence-badge {
+  border-radius: 9999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.dck-confidence-high {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid rgba(22, 101, 52, 0.2);
+}
+
+.dck-confidence-medium {
+  background: #fffbeb;
+  color: #92400e;
+  border: 1px solid rgba(146, 64, 14, 0.2);
+}
+
+.dck-confidence-low {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid rgba(153, 27, 27, 0.2);
+}
+
+/* Price hero */
+.dck-price-hero {
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
+  margin-bottom: 0.5rem;
+}
+
+.dck-price-amount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.dck-price-label {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Confidence explanation */
+.dck-confidence-explanation {
+  font-size: 0.8125rem;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0.25rem 0 0.875rem;
+  padding: 0.5rem 0.75rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  border-left: 2px solid #cbd5e1;
+}
+
+/* Rate chips row */
+.dck-rate-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.dck-rate-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.dck-rate-chip-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #94a3b8;
+}
+
+.dck-rate-chip-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Section labels */
+.dck-section-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #94a3b8;
+  margin: 0 0 0.5rem;
+}
+
+/* Cost breakdown */
+.dck-breakdown {
+  margin-bottom: 0.875rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.dck-breakdown-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dck-breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.3rem 0;
+  border-bottom: 1px dashed #f1f5f9;
+  animation: dck-fade-slide 0.35s ease-out forwards;
+}
+
+.dck-breakdown-row:last-child {
+  border-bottom: none;
+  font-weight: 600;
+}
+
+.dck-breakdown-line-label {
+  font-size: 0.8125rem;
+  color: #475569;
+}
+
+.dck-breakdown-line-amount {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #0f172a;
+  white-space: nowrap;
+  margin-left: 0.75rem;
+}
+
+/* Highlights */
+.dck-highlights {
+  margin-bottom: 0.875rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.dck-highlights-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.dck-highlight-item {
+  font-size: 0.8125rem;
+  color: #1e40af;
+  border-left: 3px solid #2563eb;
+  padding-left: 0.625rem;
+  line-height: 1.45;
+  animation: dck-fade-slide 0.35s ease-out forwards;
+}
+
+/* Assumptions */
+.dck-assumptions {
+  padding-top: 0.75rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.dck-assumptions-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  counter-reset: dck-assumption-counter;
+}
+
+.dck-assumption-item {
+  counter-increment: dck-assumption-counter;
+  font-size: 0.8rem;
+  color: #64748b;
+  line-height: 1.45;
+  padding-left: 1.5rem;
+  position: relative;
+  animation: dck-fade-slide 0.35s ease-out forwards;
+}
+
+/* =====================================================
+   Compact card variant — sidebar conversation bubble
+   ===================================================== */
+
+.dck-analysis-card--compact {
+  padding: 0.875rem 1rem;
+  transition: none;
+}
+
+.dck-analysis-card--compact:hover {
+  transform: none;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.07), 0 1px 4px rgba(15, 23, 42, 0.04);
+}
+
+.dck-analysis-card--compact .dck-price-amount {
+  font-size: 1.625rem;
+}
+
+.dck-analysis-card--compact .dck-rate-chip {
+  padding: 0.3rem 0.5rem;
+}
+
+/* Expand button */
+.dck-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.875rem;
+  padding: 0.4rem 0.875rem;
+  background: #eff6ff;
+  color: #1e40af;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.dck-expand-btn:hover {
+  background: #dbeafe;
+  border-color: rgba(37, 99, 235, 0.35);
+}
+
+.dck-expand-btn-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* =====================================================
+   Quote Analysis Modal
+   ===================================================== */
+
+@keyframes dck-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dck-modal-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+.dck-modal-panel {
+  background: #ffffff;
+  border-radius: 1.25rem;
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.18), 0 4px 16px rgba(37, 99, 235, 0.1);
+  max-height: 85vh;
+  animation: dck-modal-in 0.25s ease-out forwards;
+  padding: 1.25rem;
+  position: relative !important;
+  z-index: 1000 !important;
+}
+
+.dck-modal-backdrop {
+  opacity: 1;
+  transition: opacity 0.18s ease;
+}
+
+.dck-modal-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  background: #eff6ff;
+  color: #1e40af;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dck-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: #f1f5f9;
+  color: #64748b;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.dck-modal-close:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.dck-modal-close:active {
+  transform: scale(0.92);
+}
+
+/* Give the card inside the modal a bit of top padding so it clears the close button */
+.dck-modal-panel .dck-analysis-card {
+  margin-top: 1.8rem;
+}
+
+/* =====================================================
+   Sidebar de-emphasis when modal is active
+   ===================================================== */
+
+body.dck-modal-open [data-copilot-sidebar] {
+  filter: blur(2px) saturate(0.96);
+  opacity: 0.7;
+  transform: scale(0.995) translateX(2px);
+  pointer-events: none;
+  transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+  z-index: 20 !important;
+}
+
+body.dck-modal-open .cpk-sidebar-toggle {
+  filter: blur(1px);
+  opacity: 0.6;
+  pointer-events: none;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+  z-index: 20 !important;
+}
+
+.dck-modal-leaving .dck-modal-backdrop {
+  opacity: 0;
+}
+
+.dck-modal-leaving .dck-modal-panel {
+  animation: dck-modal-out 0.18s ease forwards;
+}
+
+.dck-assumption-item::before {
+  content: counter(dck-assumption-counter);
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  width: 1.1rem;
+  height: 1.1rem;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 9999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
