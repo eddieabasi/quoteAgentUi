@@ -10,7 +10,7 @@ import {
   
   const runtime = new CopilotRuntime({
     agents: {
-      my_agent: new HttpAgent({ url: "http://localhost:8000/" }),
+      my_agent: new HttpAgent({ url: process.env.AGENT_URL! }),
     }
   });
   
